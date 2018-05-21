@@ -1,0 +1,64 @@
+<div id="scence4" class="scence4">
+    <div style="border:1px solid #f9f9f9">
+        <div class="scence4Header">
+            <div style="flex:6;display: flex;justify-content: left;">
+                <div [class]="isClickExperTask?'grayTitleDiv':'titleDiv'">
+                    {{i18nData.myTask | bonTranslate}}
+                </div>
+                <div (mouseenter)="enterExperTask()" (mouseleave)="leaveExperTask()"  style="height: 35px;  width: 136px; margin-left: 20px;">
+                    <div class="experTaskTitle" [style.background-color]="isClickExperTask?'#00c1de':''" [style.opacity]="isEnterExperTask?'0.8':'1'" (click)="clickExperTask()">
+                        <img class="experTaskImage" [src]="isClickExperTask?'image/closeIcon.png':'image/experTaskIcon.png'">
+                        <div class="experTaskText1" *ngIf="!isClickExperTask">{{'experienceScene' | bonTranslate}}</div>
+                        <div class="experTaskText2" *ngIf="isClickExperTask&&!isEnterExperTask">{{'experiencing' | bonTranslate}}</div>
+                        <div class="experTaskText2" *ngIf="isClickExperTask&&isEnterExperTask">{{'closeExperience' | bonTranslate }}</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="flex:1" class="search">
+                <input id="keyDownSearchTask" type="serach" placeholder="{{i18nData.fuzzySearch | bonTranslate}}" (keydown.enter)="keyDownSearch($event)">
+            </div>
+            <div class="quickCreatTask">
+                <button id="quickCreatTask" (click)="showCreatTaskWindow()"><img src="image/xinjianchanjing.png">&nbsp;&nbsp;&nbsp;{{i18nData.newSceneT | bonTranslate}}</button>
+            </div>
+        </div>
+        <div class="scence4Header1" id="scence4Header1List">
+            <ul>
+                <li style="width:320px">{{i18nData.taskName | bonTranslate}}</li>
+                <li style="width:180px">{{i18nData.operator | bonTranslate}}</li>
+                <li style="width:250px;">{{i18nData.attributionTopics | bonTranslate}}</li>
+                <li style="width:250px">{{i18nData.taskOverview | bonTranslate}}</li>
+                <li class="li-li" style="width:140px;" (mouseenter)="selectEnter(2)" (mouseleave)="selectOut(2)">
+                    <div class="div-img">
+                        <div class="div-word">
+                            {{i18nData.taskStatus | bonTranslate}}
+                        </div>
+                        <img class="div-word-img" src="image/san.png" alt="">
+                    </div>
+                    <div *ngIf="isShow2" class="selectUl selectUl2">
+                        <ul>
+                            <li id="selectUl2-li1" (click)="selectOption(0)" [ngClass]="{selectSty:isSlect1===0}">{{'all' | bonTranslate}}</li>
+                            <li id="selectUl2-li2" (click)="selectOption(1)" [ngClass]="{selectSty:isSlect1===1}">{{'success' | bonTranslate}}</li>
+                            <li id="selectUl2-li3" (click)="selectOption(2)" [ngClass]="{selectSty:isSlect1===2}">{{'part_success' | bonTranslate}}</li>
+                            <li id="selectUl2-li4" (click)="selectOption(3)" [ngClass]="{selectSty:isSlect1===3}">{{'fail' | bonTranslate}}</li>
+                            <li id="selectUl2-li5" (click)="selectOption(4)" [ngClass]="{selectSty:isSlect1===4}">{{'doing' | bonTranslate}}</li>
+                            <li id="selectUl2-li6" (click)="selectOption(5)" [ngClass]="{selectSty:isSlect1===5}">{{'draft' | bonTranslate}}</li>
+                            <li id="selectUl2-li7" (click)="selectOption(6)" [ngClass]="{selectSty:isSlect1===6}">{{'waiting' | bonTranslate}}</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="div-wins" id="myTaskWindows">
+            <taskInfo *ngFor="let item of allData;let i=index"  [datas]="[item,isClickExperTask]" [searchName1]="searchNameVal"
+                (reflush)="reflushTaskList($event)" (outputSceenWindow)="openSceenWindow($event)"></taskInfo>
+        </div>
+    </div>
+    <div class="pagestyle">
+        <div id="taskPagination" class="pagination">
+        </div>
+    </div>
+</div>
+<createTask *ngIf="showCreateTask" (closeTaskWindow)="closeCreateTask($event)"></createTask>
+<createSceen *ngIf="showSceenWindow" [setTaskInfoObject]="taskInfoObject" (closeSceenWindow)="closewindow($event)" (refeshDataAfterSave)="refeshData()"></createSceen>
